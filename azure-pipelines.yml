@@ -14,10 +14,10 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: './veracode scan --source ./terraform --type directory --format text'
+    script: './veracode scan --type directory --source /terraform/azure --format text'
   displayName: 'Scan'
 
 - task: CmdLine@2
   inputs:
-    script: './veracode sbom --source ./terraform --type directory --format text'
+    script: './veracode sbom --type directory --source /terraform/azure --format text'
   displayName: 'SBOM'
