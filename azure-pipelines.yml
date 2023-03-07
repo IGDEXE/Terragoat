@@ -1,0 +1,30 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: Veracode
+
+steps:
+- script: |
+    curl -fsS https://tools.veracode.com/veracode-cli/install | sh
+    export VERACODE_API_KEY_ID=$(APIID)
+    export VERACODE_API_KEY_SECRET=$(APIKEY)
+  displayName: 'Configuração inicial'
+
+- task: CmdLine@2
+  inputs:
+    script: './veracode scan ./terraform --type directory'
+  displayName: 'Scan'
+
+- task: CmdLine@2
+  inputs:
+    script: './veracode sbom ./terraform --type directory'
+  displayName: 'SBOM'
