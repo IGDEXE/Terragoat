@@ -21,10 +21,10 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: './veracode scan ./terraform --type directory'
+    script: './veracode scan --source ./terraform --type directory'
   displayName: 'Scan'
 
 - task: CmdLine@2
   inputs:
-    script: './veracode sbom ./terraform --type directory'
+    script: './veracode sbom --source ./terraform --type directory'
   displayName: 'SBOM'
