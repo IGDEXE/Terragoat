@@ -19,5 +19,5 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: './veracode sbom --type directory --source ./terraform/azure --format table'
+    script: './veracode sbom --type repo --source https://github.com/IGDEXE/Terragoat --format table'
   displayName: 'SBOM'
