@@ -12,6 +12,7 @@ stages:
     - powershell: |
         curl -fsS https://tools.veracode.com/veracode-cli/install | sh
         ./veracode scan --type directory --source ./terraform/ --format table
+        ./veracode sbom --type directory --source ./terraform/ --format table
       displayName: 'Veracode IaC'
       continueOnError: true
       env: 
@@ -28,7 +29,8 @@ stages:
     - powershell: |
         Set-ExecutionPolicy AllSigned -Scope Process -Force
         $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
-        veracode sbom --source ./terraform/ --type directory
+        veracode sbom --source ./terraform/ --type directory --format table
+        veracode scan --source ./terraform/ --type directory --format table
       displayName: 'Veracode IaC'
       continueOnError: true
       env: 
