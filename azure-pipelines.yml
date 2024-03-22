@@ -1,18 +1,36 @@
 trigger:
 - master
 
-pool:
-  vmImage: windows-latest
-
-
-steps:
-- powershell: |
-    Set-ExecutionPolicy AllSigned -Scope Process -Force
-    $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
-    veracode policy get "OWASP" --format json
-    veracode scan --source ./terraform/ --type directory --policy-file OWASP.json
-  displayName: 'Veracode IaC'
-  continueOnError: true
-  env: 
-    VERACODE_API_KEY_ID: $(VeracodeID)
-    VERACODE_API_KEY_SECRET: $(VeracodeKey)
+stages:
+- stage: Windows
+  displayName: Windows
+  jobs:
+  - job: Build
+    pool:
+        vmImage: 'windows-latest'
+    steps: 
+    - powershell: |
+        Set-ExecutionPolicy AllSigned -Scope Process -Force
+        $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
+        veracode scan --source ./terraform/ --type directory
+      displayName: 'Veracode IaC'
+      continueOnError: true
+      env: 
+        VERACODE_API_KEY_ID: $(VeracodeID)
+        VERACODE_API_KEY_SECRET: $(VeracodeKey)
+    
+- stage: Linux
+  displayName: Linux
+  jobs:
+  - job: Build
+    pool:
+        vmImage: 'ubuntu-latest'
+    steps: 
+    - powershell: |
+        curl -fsS https://tools.veracode.com/veracode-cli/install | sh
+        veracode scan --source ./terraform/ --type directory
+      displayName: 'Veracode IaC'
+      continueOnError: true
+      env: 
+        VERACODE_API_KEY_ID: $(VeracodeID)
+        VERACODE_API_KEY_SECRET: $(VeracodeKey)
