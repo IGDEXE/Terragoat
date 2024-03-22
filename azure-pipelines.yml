@@ -9,8 +9,8 @@ steps:
 - powershell: |
     Set-ExecutionPolicy AllSigned -Scope Process -Force
     $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
-    veracode configure
-    veracode scan --source ./terraform/ --type directory
+    veracode policy get "OWASP" --format json
+    veracode scan --source ./terraform/ --type directory --policy-file OWASP.json
   displayName: 'Veracode IaC'
   continueOnError: true
   env: 
