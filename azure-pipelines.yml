@@ -19,7 +19,7 @@ stages:
             foreach ($problem in $problemsList) {
                 Write-Host "$problem"
             }
-            if ($problemsList.Contains("secret.rego")) {
+            if ($problemsList -like "*secret.rego*") {
                 $secretsProblems = $json.secrets.results.Secrets
                 Write-Host "Secrets detalhes:"
                 foreach ($secretsProblem in $secretsProblems) {
