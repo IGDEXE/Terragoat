@@ -23,7 +23,7 @@ stages:
         ls
         Set-ExecutionPolicy AllSigned -Scope Process -Force
         $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
-        veracode scan --source ./terraform/ --type directory --format table
+        veracode scan --source $(Build.ArtifactStagingDirectory)/terraform/ --type directory --format table
       displayName: 'Veracode IaC'
       continueOnError: true
       env: 
