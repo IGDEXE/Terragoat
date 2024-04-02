@@ -17,6 +17,10 @@ stages:
         $windowsOsName = $computerInfo.OsName
         # Exibir a versão do Windows
         Write-Host "$windowsOsName : $windowsVersion"
+        ls 
+        Write-Host "Entrando em $env:USERPROFILE"
+        cd $env:USERPROFILE
+        ls
         Set-ExecutionPolicy AllSigned -Scope Process -Force
         $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
         veracode scan --source ./terraform/ --type directory --format table
