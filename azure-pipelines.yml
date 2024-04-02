@@ -17,13 +17,15 @@ stages:
         $windowsOsName = $computerInfo.OsName
         # Exibir a versão do Windows
         Write-Host "$windowsOsName : $windowsVersion"
+        $sourcePath = Get-Location
+        Write-Host "Atual: $sourcePath"
         ls 
         Write-Host "Entrando em $env:USERPROFILE"
         cd $env:USERPROFILE
         ls
         Set-ExecutionPolicy AllSigned -Scope Process -Force
         $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
-        veracode scan --source $(Build.ArtifactStagingDirectory)/terraform/ --type directory --format table
+        veracode scan --source $sourcePath/terraform/ --type directory --format table
       displayName: 'Veracode IaC'
       continueOnError: true
       env: 
