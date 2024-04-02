@@ -10,6 +10,13 @@ stages:
         vmImage: 'windows-2022'
     steps: 
     - powershell: |
+        # Obter informações do computador
+        $computerInfo = Get-ComputerInfo
+        # Extrair a versão do Windows
+        $windowsVersion = $computerInfo.OSVersion
+        $windowsOsName = $computerInfo.OsName
+        # Exibir a versão do Windows
+        Write-Host "$windowsOsName : $windowsVersion"
         Set-ExecutionPolicy AllSigned -Scope Process -Force
         $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
         veracode scan --source ./terraform/ --type directory --format table
