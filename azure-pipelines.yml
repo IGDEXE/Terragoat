@@ -2,29 +2,12 @@ trigger:
 - master
 
 stages:
-- stage: Windows
-  displayName: Windows 2019
+- stage: Windows22
+  displayName: Windows 2022
   jobs:
   - job: Build
     pool:
-        vmImage: 'windows-2019'
-    steps: 
-    - powershell: |
-        Set-ExecutionPolicy AllSigned -Scope Process -Force
-        $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
-        veracode scan --source ./terraform/ --type directory --format table
-      displayName: 'Veracode IaC'
-      continueOnError: true
-      env: 
-        VERACODE_API_KEY_ID: $(VeracodeID)
-        VERACODE_API_KEY_SECRET: $(VeracodeKey)
-
-- stage: Windows16
-  displayName: Windows 2016
-  jobs:
-  - job: Build
-    pool:
-        vmImage: 'windows-2016'
+        vmImage: 'windows-2022'
     steps: 
     - powershell: |
         Set-ExecutionPolicy AllSigned -Scope Process -Force
